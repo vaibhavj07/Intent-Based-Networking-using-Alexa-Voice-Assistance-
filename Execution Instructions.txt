@@ -1,0 +1,34 @@
+1.  start topology
+
+sudo mn --controller=remote,ip=127.0.0.1 --mac -i 10.1.1.0/24 --switch=ovsk,protocols=OpenFlow13 --topo=linear,4
+
+-> Pingall
+
+
+2. ryu controller
+
+ryu-manager --observe-links app.py
+
+
+3. Run Ngrok
+ngrok http 5000
+
+
+4. Run Alexa.py
+
+python3 alexa.py
+
+
+
+Testing 
+
+mininet> h2 iperf -u -s &
+mininet> h1 iperf -u -b 10m -t 30 -c  h2
+
+
+
+Self Healing
+-----------------------------------------------------
+sudo ovs-vsctl del-controller s1
+sudo ovs-vsctl set bridge s1 protocols=OpenFlow10
+sudo ovs-vsctl set-controller s1 "tcp:127.0.0.1:6653"
